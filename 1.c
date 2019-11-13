@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <string.h>
 #include <fcntl.h>
+#include <time.h>
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -137,10 +138,14 @@ void handle_socket(int fd)
         // }
         // fclose(fp);
         // write(fd, "success", 7);
-        char filename[1024];
+        char filename[1024] = "./tmp/", file_time[64];
         char *ptr = strstr(buffer, "filename=\"") + 10, *qtr;
-        j = 6;
-        strcpy(filename, "./tmp/");
+        time_t stamp = time(NULL);
+
+        sprintf(file_time, "%ld", stamp);
+        strcat(file_time, "_");
+        strcat(filename, file_time);
+        j = 17;
         while (ptr[0] != '"')
         {
             filename[j] = *ptr;
